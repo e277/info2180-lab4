@@ -1,17 +1,34 @@
-// Exercise 2 - Make an AJAX call that returns the list of Superheroes
+// Exercise 3 - Look up any Superhero by typing in the name or alias in a Textfield
 
 $(document).ready(() => {
-    $('#search').click(() => {
+    $('#search').click((event) => {
+        event.preventDefault();
+
+        const query = $('#searchText').val();
+        
         $.ajax({
             type: 'GET',
             url: 'superheroes.php',
             success: (response) => {
-                // display the response in alert() function
-                alert(response)
+                $('#result').html(response);
             },
             error: (error) => {
-                console.log(error)
+                console.log("[ERROR]: ", error);
             }
-        })
+        });
+
+        if (query !== '') {
+            $.ajax({
+                type: 'GET',
+                url: 'superheroes.php?query=' + query,
+                success: (response2) => {
+                    $('#result').html(response2);
+                },
+                error: (error) => {
+                    console.log("[ERROR]: ", error);
+                }
+            });
+        }
     })
 })
+
